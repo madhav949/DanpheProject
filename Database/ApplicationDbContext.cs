@@ -7,7 +7,12 @@ namespace HMS.Database
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
-        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> patients { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
+
+        internal bool IsDelete(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
