@@ -1,7 +1,9 @@
 
 using HospitalMangement.API.Data;
-using Microsoft.EntityFrameworkCore;
+using HospitalMangement.API.Services;
+using HospitalMangement.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -19,6 +21,10 @@ namespace HospitalMangement.API
 
 
             // Add services to the container.
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddScoped<IPatientService, PatientService>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
