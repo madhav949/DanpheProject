@@ -19,9 +19,7 @@ namespace HospitalMangement.API.Services
         {
             var appointments = await _context.Appointments
                                              .Include(a => a.Doctor)
-                                                .ThenInclude(d => d.user)
                                              .Include(a => a.Patient)
-                                                .ThenInclude(p => p.User)
                                              .ToListAsync();
 
             return appointments.Select(a => new AppointmentReadDto
@@ -30,17 +28,16 @@ namespace HospitalMangement.API.Services
                 DoctorId = a.DoctorId,
                 PatientId = a.PatientId,
                 AppointmentDate = a.AppointmentDate,
-                Status = a.Status,
-                DoctorName = a.Doctor?.user?.FullName,
-                PatientName = a.Patient?.User?.FullName
+                DoctorName = a.Doctor?.DocFullName,
+                PatientName = a.Patient?.FullName
             });
         }
 
         public async Task<AppointmentReadDto> GetByIdAsync(int id)
         {
             var a = await _context.Appointments
-                                  .Include(a => a.Doctor).ThenInclude(d => d.user)
-                                  .Include(a => a.Patient).ThenInclude(p => p.User)
+                                  .Include(a => a.Doctor)
+                                  .Include(a => a.Patient)
                                   .FirstOrDefaultAsync(x => x.Id == id);
 
             if (a == null) return null;
@@ -50,10 +47,10 @@ namespace HospitalMangement.API.Services
                 Id = a.Id,
                 DoctorId = a.DoctorId,
                 PatientId = a.PatientId,
-                AppointmentDate = a.AppointmentDate,
                 Status = a.Status,
-                DoctorName = a.Doctor?.user?.FullName,
-                PatientName = a.Patient?.User?.FullName
+                AppointmentDate = a.AppointmentDate,
+                DoctorName = a.Doctor?.DocFullName,
+                PatientName = a.Patient?.FullName
             };
         }
 
@@ -64,15 +61,15 @@ namespace HospitalMangement.API.Services
                 DoctorId = dto.DoctorId,
                 PatientId = dto.PatientId,
                 AppointmentDate = dto.AppointmentDate,
-                Status = "Pending"
+                
             };
 
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
-            var doctor = await _context.Doctors.Include(d => d.user)
+            var doctor = await _context.Doctors
                                                .FirstOrDefaultAsync(d => d.Id == dto.DoctorId);
-            var patient = await _context.Patients.Include(p => p.User)
+            var patient = await _context.Patients
                                                  .FirstOrDefaultAsync(p => p.Id == dto.PatientId);
 
             return new AppointmentReadDto
@@ -81,23 +78,30 @@ namespace HospitalMangement.API.Services
                 DoctorId = appointment.DoctorId,
                 PatientId = appointment.PatientId,
                 AppointmentDate = appointment.AppointmentDate,
-                Status = appointment.Status,
-                DoctorName = doctor?.user?.FullName,
-                PatientName = patient?.User?.FullName
+                DoctorName = doctor?.DocFullName,
+                PatientName = patient?.FullName
             };
         }
 
-        public async Task<bool> UpdateAsync(int id, AppointmentUpdateDto dto)
+        public async Task<AppointmentReadDto> UpdateAsync(int id, AppointmentUpdateDto dto)
         {
             var appointment = await _context.Appointments.FindAsync(id);
-            if (appointment == null) return false;
+            
 
             appointment.AppointmentDate = dto.AppointmentDate;
-            appointment.Status = dto.Status;
+
+
 
             _context.Appointments.Update(appointment);
             await _context.SaveChangesAsync();
-            return true;
+
+            var updateAppointment = new AppointmentReadDto
+            {
+                AppointmentDate = appointment.AppointmentDate,
+                Status = appointment.Status
+
+            };
+            return updateAppointment;
         }
 
         public async Task<bool> DeleteAsync(int id)

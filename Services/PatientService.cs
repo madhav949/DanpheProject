@@ -17,42 +17,42 @@ namespace HospitalMangement.API.Services
 
         public async Task<IEnumerable<PatientReadDto>> GetAllAsync()
         {
-            var patients = await _context.Patients.Include(p => p.User).ToListAsync();
+            var patients = await _context.Patients.ToListAsync();
             return patients.Select(p => new PatientReadDto
             {
                 Id = p.Id,
-                UserId = p.UserId,
+
                 Gender = p.Gender,
                 Address = p.Address,
                 DateOfAdmit = p.DateOfAdmit,
-                UserFullName = p.User?.FullName,
-                UserEmail = p.User?.Email
+                FullName = p.FullName,
+                PhoneNumber = p.PhoneNumber
             });
+            
         }
 
         public async Task<PatientReadDto> GetByIdAsync(int id)
         {
-            var p = await _context.Patients.Include(p => p.User)
-                                           .FirstOrDefaultAsync(x => x.Id == id);
+            var p = await _context.Patients.FirstOrDefaultAsync(e => e.Id == id);
             if (p == null) return null;
 
             return new PatientReadDto
-            {
-                Id = p.Id,
-                UserId = p.UserId,
+            { 
                 Gender = p.Gender,
                 Address = p.Address,
                 DateOfAdmit = p.DateOfAdmit,
-                UserFullName = p.User?.FullName,
-                UserEmail = p.User?.Email
+                FullName = p.FullName,
+                PhoneNumber = p.PhoneNumber
             };
+            
         }
 
         public async Task<PatientReadDto> CreateAsync(PatientCreateDto dto)
         {
             var patient = new Patient
             {
-                UserId = dto.UserId,
+                FullName = dto.FullName,
+                PhoneNumber = dto.PhoneNumber,
                 Gender = dto.Gender,
                 Address = dto.Address,
                 DateOfAdmit = dto.DateOfAdmit
@@ -61,25 +61,26 @@ namespace HospitalMangement.API.Services
             _context.Patients.Add(patient);
             await _context.SaveChangesAsync();
 
-            var user = await _context.Users.FindAsync(dto.UserId);
+            var user = await _context.Patients.FindAsync(patient.Id);
 
             return new PatientReadDto
             {
                 Id = patient.Id,
-                UserId = patient.UserId,
                 Gender = patient.Gender,
                 Address = patient.Address,
                 DateOfAdmit = patient.DateOfAdmit,
-                UserFullName = user?.FullName,
-                UserEmail = user?.Email
+                FullName = user?.FullName,
+                PhoneNumber = patient.PhoneNumber
             };
+          
         }
 
         public async Task<bool> UpdateAsync(int id, PatientUpdateDto dto)
         {
             var p = await _context.Patients.FindAsync(id);
             if (p == null) return false;
-
+            p.FullName = dto.FullName;
+            p.PhoneNumber = dto.PhoneNumber;
             p.Gender = dto.Gender;
             p.Address = dto.Address;
 

@@ -8,7 +8,7 @@ namespace HospitalMangement.API.Services.Interfaces
         Task<IEnumerable<DoctorReadDto>> GetAllAsync();
         Task<DoctorReadDto> GetByIdAsync(int id);
         Task<DoctorReadDto> CreateAsync(DoctorCreateDto dto);
-        Task<bool> UpdateAsync(int id, DoctorUpdateDto dto);
+        Task<DoctorReadDto> UpdateAsync(int id, DoctorUpdateDto dto);
         Task<bool> DeleteAsync(int id);
     }
 }

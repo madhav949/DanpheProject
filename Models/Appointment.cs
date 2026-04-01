@@ -7,8 +7,14 @@ public class Appointment
     public int PatientId {  get; set; }
 
     public DateTime AppointmentDate { get; set; }
-    public string Status { get; set; } = "Pending";
+    public AppointmentTypes Status { get; set; } = AppointmentTypes.Pending;
 
     public Doctor Doctor { get; set; }
     public Patient Patient { get; set; }    
+}
+public enum AppointmentTypes
+{
+    Pending,
+    Cancelled,
+    Approved
 }

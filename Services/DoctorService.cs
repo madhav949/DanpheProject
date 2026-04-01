@@ -3,6 +3,7 @@ using HospitalMangement.API.DTOs.Doctor;
 using HospitalMangement.API.Models;
 using HospitalMangement.API.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Numerics;
 
 
 namespace HospitalMangement.API.Services
@@ -22,7 +23,7 @@ namespace HospitalMangement.API.Services
             return doctors.Select(d => new DoctorReadDto
             {
                 Id = d.Id,
-                UserId = d.UserId,
+                DocFullName = d.DocFullName,
                 DepartmentId = d.DepartmentId,
                 Qualification = d.Qualification,
                 ExperienceYears = d.ExperienceYears,
@@ -39,7 +40,6 @@ namespace HospitalMangement.API.Services
             return new DoctorReadDto
             {
                 Id = d.Id,
-                UserId = d.UserId,
                 DepartmentId = d.DepartmentId,
                 Qualification = d.Qualification,
                 ExperienceYears = d.ExperienceYears,
@@ -51,7 +51,7 @@ namespace HospitalMangement.API.Services
         {
             var doctor = new Doctor
             {
-                UserId = dto.UserId,
+                DocFullName = dto.DocFullName,
                 DepartmentId = dto.DepartmentId,
                 Qualification = dto.Qualification,
                 ExperienceYears = dto.ExperienceYears
@@ -65,7 +65,7 @@ namespace HospitalMangement.API.Services
             return new DoctorReadDto
             {
                 Id = doctor.Id,
-                UserId = doctor.UserId,
+                DocFullName = doctor.DocFullName,
                 DepartmentId = doctor.DepartmentId,
                 Qualification = doctor.Qualification,
                 ExperienceYears = doctor.ExperienceYears,
@@ -73,18 +73,29 @@ namespace HospitalMangement.API.Services
             };
         }
 
-        public async Task<bool> UpdateAsync(int id, DoctorUpdateDto dto)
+        public async Task<DoctorReadDto> UpdateAsync(int id, DoctorUpdateDto dto)
         {
             var doctor = await _context.Doctors.FindAsync(id);
-            if (doctor == null) return false;
+          
 
             doctor.DepartmentId = dto.DepartmentId;
             doctor.Qualification = dto.Qualification;
             doctor.ExperienceYears = dto.ExperienceYears;
-
+            doctor.DocFullName = dto.DocFullName;
             _context.Doctors.Update(doctor);
             await _context.SaveChangesAsync();
-            return true;
+
+
+            var updatedDoctor = new DoctorReadDto
+            {
+                Id = doctor.Id,
+                Qualification = doctor.Qualification,
+                DocFullName = doctor.DocFullName,
+                ExperienceYears = doctor.ExperienceYears,
+                DepartmentId = doctor.DepartmentId
+            };
+            return updatedDoctor;
+
         }
 
         public async Task<bool> DeleteAsync(int id)

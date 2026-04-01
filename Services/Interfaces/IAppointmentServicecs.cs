@@ -7,7 +7,7 @@ namespace HospitalMangement.API.Services.Interfaces
         Task<IEnumerable<AppointmentReadDto>> GetAllAsync();
         Task<AppointmentReadDto> GetByIdAsync(int id);
         Task<AppointmentReadDto> CreateAsync(AppointmentCreateDto dto);
-        Task<bool> UpdateAsync(int id, AppointmentUpdateDto dto);
+        Task<AppointmentReadDto> UpdateAsync(int id, AppointmentUpdateDto dto);
         Task<bool> DeleteAsync(int id);
     }
 }

@@ -37,8 +37,7 @@ namespace HospitalMangement.API.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] DoctorUpdateDto dto)
         {
             var success = await _service.UpdateAsync(id, dto);
-            if (!success) return NotFound();
-            return NoContent();
+            return Ok(success);
         }
 
         [HttpDelete("{id}")]

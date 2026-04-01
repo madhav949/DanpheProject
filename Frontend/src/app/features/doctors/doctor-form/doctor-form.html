@@ -1,0 +1,83 @@
+<div class="card shadow">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">
+      {{ isEditMode ? 'Edit Doctor' : 'Create Doctor' }}
+    </h5>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-6">
+          <!-- Department -->
+          <div class="mb-3">
+            <select class="form-select" formControlName="departmentId">
+              <option value="">Select Department</option>
+              <option value="" *ngFor="let dept of departments" [value]="dept.id">
+                {{dept.name}}
+              </option>
+            </select>
+          </div>
+
+          <!-- Doctor Name -->
+          <div class="mb-3">
+            <label class="form-label">Doctor Full Name</label>
+            <input type="text" class="form-control" formControlName="docFullName" />
+
+            <div
+              class="text-danger"
+              *ngIf="
+                doctorForm.get('docFullName')?.touched && doctorForm.get('docFullName')?.invalid
+              "
+            >
+              Name is required (min 3 characters)
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <!-- Qualification -->
+          <div class="mb-3">
+            <label class="form-label">Qualification</label>
+            <input type="text" class="form-control" formControlName="qualification" />
+
+            <div
+              class="text-danger"
+              *ngIf="
+                doctorForm.get('qualification')?.touched && doctorForm.get('qualification')?.invalid
+              "
+            >
+              Qualification is required
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div class="mb-3">
+            <label class="form-label">Experience (Years)</label>
+            <input type="number" class="form-control" formControlName="experienceYears" />
+
+            <div
+              class="text-danger"
+              *ngIf="
+                doctorForm.get('experienceYears')?.touched &&
+                doctorForm.get('experienceYears')?.invalid
+              "
+            >
+              Experience must be 0 or greater
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row d-flex align-items-center justify-content-center">
+        <!-- Buttons -->
+        <div class="d-flex gap-2">
+          <button class="btn btn-success" type="submit">
+            {{ isEditMode ? 'Update Doctor' : 'Create Doctor' }}
+          </button>
+
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

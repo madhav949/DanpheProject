@@ -4,6 +4,7 @@ namespace HospitalMangement.API.Services.Interfaces
 {
     public interface IPatientService
     {
+
         Task<IEnumerable<PatientReadDto>> GetAllAsync();
         Task<PatientReadDto> GetByIdAsync(int id);
         Task<PatientReadDto> CreateAsync(PatientCreateDto dto);

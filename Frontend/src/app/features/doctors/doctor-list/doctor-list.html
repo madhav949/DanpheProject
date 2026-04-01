@@ -1,0 +1,30 @@
+<div class="row d-flex align-items-center justify-content-end">
+  <button class="btn btn-primary w-25 mt-2" (click)="OpenModel()">Create New Doctor</button>
+</div>
+<div class="row">
+  <h4 class="text-center">Doctor List</h4>
+</div>
+<ag-grid-angular
+  class="ag-theme-alpine container mt-3"
+  style="height: 200px"
+  [rowData]="rowData"
+  [columnDefs]="colDefs"
+  [defaultColDef]="defaultcoldef"
+>
+</ag-grid-angular>
+<div class="modal" id="DoctorCreate" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{isEdit ? "Update":"Create"}} Doctor</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <app-doctor-form  [doctorData]="currentDoctor" (updateDoctor)="UpdateDoctor($event)" (DocterCreate)="CreateDoctor($event)"></app-doctor-form>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div> -->
+    </div>
+  </div>
+</div>

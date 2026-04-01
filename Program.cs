@@ -18,11 +18,19 @@ namespace HospitalMangement.API
 
             builder.Services.AddDbContext<HospitalDbContext>(options =>
                   options.UseSqlServer(builder.Configuration.GetConnectionString("Dbcon")));
-
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("Allow", policy =>
+                {
+                    policy.AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader();
+                });
+            });
 
             // Add services to the container.
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            builder.Services.AddScoped<IDoctorService, DoctorService>();
+              builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddScoped<IPatientService, PatientService>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
@@ -68,9 +76,10 @@ namespace HospitalMangement.API
 
             app.UseHttpsRedirection();
 
+            app.UseCors("Allow");
             app.UseAuthorization();
             app.UseAuthentication();
-            app.UseAuthorization();
+            
 
 
 

@@ -1,0 +1,45 @@
+<ag-grid-angular 
+  class="ag-theme-alpine container"
+  style=" height: 200px;"
+  [rowData]="rowData"
+  [columnDefs]="colDefs"
+  [defaultColDef]="defaultcoldef">
+</ag-grid-angular>
+<div class="modal" id="patientUpdate" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Patient</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+    <div class="modal-body">
+        <app-patient-update  [patient]="currentPatient" (refresh)="PatietnUpdate($event)"></app-patient-update> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+     
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <button
+(click)="testing()">Testing</button>
+<div class="modal" id="testing" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->

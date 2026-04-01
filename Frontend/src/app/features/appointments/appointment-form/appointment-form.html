@@ -1,0 +1,92 @@
+<div class="card shadow">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">
+      {{ isEditMode ? 'Edit' : 'Create ' }}
+    </h5>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="appointmentForm" (ngSubmit)="submit()">
+      <div class="row">
+        <div class="row mb-3">
+          <input
+            type="number"
+            placeholder="Search by patient Id"
+              (keyup)="Filterpatient($event.target.value)"
+            class="form-control"
+          />
+
+          <div *ngIf="currentpatient" class="mt-2">
+            <span><b>Name:</b> {{ currentpatient.fullName }}</span
+            ><br />
+
+            <!-- <span><b>Address:</b> {{ currentpatient }}</span> -->
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Doctor</label>
+
+        <select class="form-control" formControlName="doctorId">
+         <option value="">Choose Doctor</option>
+         <option *ngFor="let d of doctors" [value]="d.id">
+          {{d.docFullName}}
+         </option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Appointment Date</label>
+
+        <input
+          type="datetime-local"
+          class="form-control"
+          formControlName="appointmentDate"
+          [min]="today"
+        />
+      </div>
+
+      <button class="btn btn-primary" type="submit" [disabled]="appointmentForm.invalid">
+        Book Appointment
+      </button>
+    </form>
+  </div>
+</div>
+<!-- <div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      Book Appointment
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+
+        Patient -->
+<!-- <div class="mb-3">
+          <label class="form-label">Select Patient</label>
+          <select class="form-select" formControlName="patientId">
+            <option value="">-- Select Patient --</option>
+            <option *ngFor="let pat of patients" [value]="pat.patientId">
+              {{pat.FullName}}
+            </option>
+          </select>
+        </div> -->
+
+<!-- Doctor -->
+<!-- <div class="mb-3">
+          <label class="form-label">Select Doctor</label>
+          <select class="form-select" formControlName="doctorId">
+            <option value="">-- Select Doctor --</option>
+            <option *ngFor="let doctor of doctors" [value]="doctor.doctorId">
+              {{doctor.docFullName}}
+            </option>
+          </select>
+        </div>
+
+        <button class="btn btn-success w-100">
+          Book Appointment
+        </button>
+
+      </form>
+    </div>
+  </div>
+</div> -->
